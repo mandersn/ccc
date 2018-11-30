@@ -1,0 +1,2 @@
+# ignore the actual config file(s) so that we do not commit secure information to GitHub
+*.yml
