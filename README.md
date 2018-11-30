@@ -6,21 +6,29 @@ This repository represents some coding practice that I am doing as I look for a 
 I wanted an environment where anyone would be able to run my code with easy instructions.  Therefore, I set up a free AWS account and created an EC2 instance (Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-023c8dbf8268fb3ca), of which only the t2.micro was Free tier eligible.  I used the default options, except for restricting access to my IP address.
 
 I logged into the instance and installed some software that would be necessary, gcc to compile gems and git in order to interact with GitHub:
+
     $ sudo yum install gcc
     $ sudo yum install git
 
 I followed the instructions at https://rvm.io to install rvm:
+
     $ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     $ \curl -sSL https://get.rvm.io | bash -s stable
 And then based on the output:
     $ source /home/ec2-user/.rvm/scripts/rvm
+
 Which allowed me to install the development version of ruby:
+
     $ rvm intall ruby-dev
 
+
 I then installed the following ruby gems that would be necessary to interact with SauceLabs using Selenium Webdriver:
+
     $ gem install selenium-webdriver
     $ gem install sauce_whisk
+
 I also installed the ASW sdk gem, which I doubt is necessary:
+
     $ gem install aws-sdk
 
 ### SauceLabs Setup
@@ -40,9 +48,11 @@ I chose not to use a framework like rSpec or Cucumber to write my tests.  Either
 
 ### Running the Tests
 In order to run all of the tests, go to the top directory of the cloned repository and run:
+
     $ ruby *-test.rb
 
 They can also be run individually using a similar command, such as:
+
     $ ruby links-test.rb
 
 ### Seeing the Results
