@@ -58,9 +58,35 @@ In order to run all of the tests, go to the top directory of the cloned reposito
 
 They can also be run individually using a similar command, such as:
 
-    $ ruby links-test.rb
+    $ ruby footer-links-test.rb
 
 ### Seeing the Results
 Since I did not use a framework, the results will just appear at the command-line.  In a real testing environment, they would be formatted by the framework to appear in Jenkins.
 
 If there is a failure or you have other reason for wanting to see screenshots of the test running, log into your [SauceLabs](https://saucelabs.com) account and click on the **Archives** area in the left menu.  You will see a list of the tests that you have run (with timestamps and other identifying information like OS and browser).  If you click on the name, you can see/download the screenshots or a video, or see the selenium logs from the test.
+
+## Tests
+Automated Functional Tests are relatively expensive.  Most things should be covered my much less expensive unit and integration tests.  I expect most common functionality to be heavily trafficed by other tests (manual and automated) and not need it's onw test; An example is that I don't think that we generally need a login test unless there is a weird login functionality that neither our normal automated functional tests nor our internal testers/developers/users use on a daily basis.  When I begin working with a development team that has little automation (or none), the first question I ask is "In which areas of the code are you scared to work?" and then I begin to automate around those areas because that fear is a gut reaction to the experience of things breaking or the possibility of thins breaking.  In deciding what to test on the homepage I used that first principle of ignoring the well trafficed areas that are unlikely to produce bugs, but was not in contact with the development team for interviews so I used my past experience of doing manual exploratory testing to determine areas where I thought bugs were most likely to appear.
+
+### Footer Links
+The 13 links in the footer would be subject to link rot at many companies.  Someone would move a page and fix one link to it and forget about others.  On your website, the most obvious place that this could happen is with the three links in this section that go to the same [https://www.creditcards.com/contact/](Contact Us) page.  
+
+#### Design
+- Go to the homepage
+- Collect a list of the links
+- Iterate of the list of the links
+  - click on the link
+  - confirm that it did not go to the 404 page
+  - print a status message
+- Go to a page that we expect to generate the 404 page
+  - confirm that the test for 404 works as expected (404 page has not changed)
+
+I had forgotten that there was not an easy way to check the HTTP response code with Selenium Webdriver when I designed this test.  I know that the solution that I created in it's place is suboptimal - if the page returns a different error response code, we would probably like to be notified.  I worry that other solutions that I thought up would break and create maintainability headaches anytime the pages or links are changed - we don't really need to keep an oracle about these pages in our tests.
+
+#### Things I noticed
+:eyes: Did someone important in your Marketing Department leave this Summer?  Both your [https://blogs.creditcards.com/](Blog) and [https://www.creditcards.com/media-recap/](Media Center) were regularly updated in early June, but haven't been updated in more than 5 months.  This is not a bug, just an observation.  [https://www.creditcards.com/about-us/press-releases/](Press Releases) have been updated and there is apparently a [https://www.creditcards.com/credit-card-news/marriott-starwood-data-breach.php](News) area that is being updated, but I didn't find from the footer.
+
+:bug: In writing up this report, I looked at the [https://www.creditcards.com/customer-support-department/](Customer Support) page for links to the [https://www.creditcards.com/contact/](Contact Us) page, thinking it would be a place where a link might not get changed.  At the bottom of the page it says "Still have questions? [](Contact Customer Support.)" but the link tag has an id with no href parameter, so it goes nowhere.  I would consider this a bug, but one with low severity.
+
+ 
+
