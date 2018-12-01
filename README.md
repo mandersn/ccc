@@ -71,6 +71,8 @@ Automated Functional Tests are relatively expensive.  Most things should be cove
 ### Footer Links
 The 13 links in the footer would be subject to link rot at many companies.  Someone would move a page and fix one link to it and forget about others.  On your website, the most obvious place that this could happen is with the three links in this section that go to the same [Contact Us](https://www.creditcards.com/contact/) page.
 
+Another place that I would explore creating a similar test or tests would be the [Site Map](https://www.creditcards.com/sitemap/).  This appears to be another collection of links that could be subject to rot over time.  I would not necessarily run a test/suite for the Site Map as often as one for the Footer, because it is not as visible, but I would still like to report if a page (toward the bottom moved) or confirm that the right people know that a category that we are displaying has become empty. 
+
 #### Design
 - Go to the homepage
 - Collect a list of the links
