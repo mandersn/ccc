@@ -40,11 +40,12 @@ linklist = footer.find_elements(:class,'linkList__link')
 linktext = linklist.map { |link| link.text }
 
 linktext.each do |item|
-  driver.get('http://creditcards.com/')
   link = driver.find_element(:link,item)
   link.click
 
   result404(check404(driver), item)
+
+  driver.navigate.back
 end
 
 driver.get('http://creditcards.com/mandersn-test')
