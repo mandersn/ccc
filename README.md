@@ -118,5 +118,24 @@ I never fully developed my idea for the fourth test.  It would have been around 
 #### Transparent/Blue Menu Transition
 In developing the test for the menu items, it seemed that there were times where the page was scrolled and the transparent menu still appeared instead of the blue one.  I noticed it, but did not take detailed notes.  This would have been an interesting test to tackle, trying to determine if there is an existing bug here and if it is one that automation could find and isolate.  The way that most companies write automation, I generally expect it to find degradations in working functionality.
 
+## Towards a Framework
+I have not created an automated testing framework, nor have I used one.  Here are some steps that I would take to move towards a framework if I had more time to work on this project:
 
+### Extract Common Code
+The most obvious thing to me is that there is common code between my two scripts.  The code that pulls credentials from the .yml config file, the code that creates the browser, and if I'd implemented the menu link test the code that checks for error pages, is all common and should be maintained in a single place so that it can't diverge from one another.  This step would likely come naturally with some of the other adjustments that I would make.
+
+### Object Oriented Code and Page Objects
+My code is writen as scripts, with a bit of procedural code.  To get to a framework, I would certainly want to move to Object Oriented code.  I would want to move to a Page Object paradigm, where every page in the application is represented in the code as an object that knows how to perform the actions that might be done to it.  This quickly allows a change to the coding of a page to be updated in the automation code in one and only one place - for instance, a change to the 404 page could be a change to the 404 page object and everywhere in the automation that checks for a 404 page would reference that same code.
+
+### Existing Frameworks
+I chose not to use either Cucumber or rSpec as a wrapper for my code.  This is fine for a small suite of scripts, but as the suite grows to hundreds of tests we will want to be able to run them and see the results reported easily, by an automation server like Jenkins.  Cucumber is a nice solution to this if non-technical people will want to participate in test creation or review.  rSpec is a reasonable solution otherwise.
+
+### Retrying Failures and Faster Tests
+SauceLabs takes screenshots as the tests run.  They are great for later review when tests fail, but are rarely reviewed when tests pass, and they add time to the test.  There is a parameter that allows us to turn off the screenshots when we run the tests.  As we get more tests we want to turn off the screenshots.  However, when a test fails I would have a way to immediately run it again with the screenshots turned on, providing a way to make sure that the test is really failing and giving us visibility into the failure.
+
+### Result Tracking
+As the test suite grows to thousands of tests, we want to start tracking results across test runs.  We want to know which tests never fail, both because they might be able to be run less often and because when they fail they should get immediate attention.  We want to know which tests failed their retries because they should also get attention.  Finally, we want to know which tests frequenly fail and then pass their retries because they also deserve some attention as they point to either a problem with the test or a rare problem with the system being tested and either one should be reported and fixed.
+
+### Multiple Suites
+I would need to understand deploy processes better, but it frequently is better if there are multiple test suites that may run in parallel and may be run stand alone and may not always run.  As a first order, there should be a suite of smoke tests that runs quickly after each deploy of the software to a server.  It should be hearty enough to catch common and obvious failures.  It's first purpose is to prevent us from spending time running other tests against a release that is so bad that the results will not be worth reviewing.  Once a smoke suite exists, frequenly there are requests for it to be run for other purposes such as monitoring.
 
