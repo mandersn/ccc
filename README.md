@@ -90,5 +90,33 @@ I had forgotten that there was not an easy way to check the HTTP response code w
 
 :bug: In writing up this report, I looked at the [Customer Support](https://www.creditcards.com/customer-support-department/) page for links to the [Contact Us](https://www.creditcards.com/contact/) page, thinking it would be a place where a link might not get changed.  At the bottom of the page it says "Still have questions? [Contact Customer Support.]()" but the link tag has an id with no href parameter, so it goes nowhere.  I would consider this a bug, but one with low severity.
 
- 
+### Header Menu Bar
+As you scroll down the page, the Menu Bar turns blue.  Because I don't know how this works, I don't really trust it.  The second test that I am submitting creates a structured list (hash of arrays) of the menus and items in the original, transparent, menubar.  It then scrolls down and confirms that the same menus appear with the same items on the menu with the blue background.
+
+#### Design
+- Go to the homepage
+- Create a list of the menus on the menu bar
+- Create a hash with the keys as the text of the menu and the value as an array of the items appearing on the menu
+- Scroll down the screen
+- Confirm that the same menus appear at the bottom
+- For each menu, confirm that it contains the same menu items
+
+#### Things I noticed
+:black_circle: SauceLabs does not always provide the same size browser.  It's not clear to me whether that is a feature of their service or just happens.
+Because of the responsive design of the website under test, that meant that the **CardMatch™** menu sometimes moved into the **Resources** menu.  This was a problem at one point when I'd had trouble developing the hash of arrays from the transparent menubar through automation and was trying to use a static oracle in my code - sometimes I'd get a browser with 5 menus and other times 4 menus and it would have been difficult to automate if I hadn't figured out how to automate the creation of the datastructure so that I am testing what I wanted.
+There are likely ways to set the browser size, and it would be good to create tests for the responsive design that confirm that the menu appears as expected at various resolutions.
+
+:black_circle: SauceLabs trial accounts via GitHub account are based on the primary address of the GitHub account.  Again, not clear if this is a feature or just happens.  After I realized that my GitHub account was tied to an email address that I no longer use and changed it to my current address, I ended up needing to create a second trial account on SauceLabs.
+
+### Other tests
+#### Header Menu Links
+I started work on this test and then evolved it into the above test that compares the transparent menu bar items to the blue menu bar items.  This test would have confirmed, like the test for the footer links, that all of the links from the menus were still good links.
+
+#### Credit Score Menu
+I never fully developed my idea for the fourth test.  It would have been around the menus that appear when you click on your credit score.  This looks like a feature that most users would use when they first arrive at the site, but one that might not be actively under development or internal use.
+
+#### Transparent/Blue Menu Transition
+In developing the test for the menu items, it seemed that there were times where the page was scrolled and the transparent menu still appeared instead of the blue one.  I noticed it, but did not take detailed notes.  This would have been an interesting test to tackle, trying to determine if there is an existing bug here and if it is one that automation could find and isolate.  The way that most companies write automation, I generally expect it to find degradations in working functionality.
+
+
 
